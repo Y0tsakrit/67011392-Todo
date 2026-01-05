@@ -104,36 +104,74 @@ function TodoList({ username, onLogout }) {
     };
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2>Todo List for: {username}</h2>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
+        <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Todo List for: <span className="text-blue-600">{username}</span></h2>
+                        <button 
+                            onClick={handleLogout}
+                            className="w-full sm:w-auto px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors duration-200"
+                        >
+                            Logout
+                        </button>
+                    </div>
             
-            <form onSubmit={handleAddTodo}>
-                <input
-                    type="text"
-                    placeholder="New Task"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                />
-                <button type="submit">Add Task</button>
-            </form>
-
-            <ul>
-                {todos.map(todo => (
-                    <li key={todo.id} style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>
+                    <form onSubmit={handleAddTodo} className="flex flex-col sm:flex-row gap-3">
                         <input
-                            type="checkbox"
-                            checked={!!todo.done} // Convert MySQL's 0/1 to boolean
-                            onChange={() => handleToggleDone(todo.id, todo.done)}
+                            type="text"
+                            placeholder="New Task"
+                            value={newTask}
+                            onChange={(e) => setNewTask(e.target.value)}
+                            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                         />
-                        {todo.task} 
-                        <small> (Updated: {new Date(todo.updated).toLocaleString()})</small>
-                        <button onClick={() => handleDeleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+                        <button 
+                            type="submit"
+                            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200 whitespace-nowrap"
+                        >
+                            Add Task
+                        </button>
+                    </form>
+                </div>
+
+                <div className="space-y-3">
+                    {todos.length === 0 ? (
+                        <p className="text-center text-gray-500 py-8">No todos yet. Add your first task above!</p>
+                    ) : (
+                        todos.map(todo => (
+                            <div 
+                                key={todo.id} 
+                                className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200"
+                            >
+                                <div className="flex items-start gap-3">
+                                    <input
+                                        type="checkbox"
+                                        checked={!!todo.done}
+                                        onChange={() => handleToggleDone(todo.id, todo.done)}
+                                        className="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                        <p className={`text-base sm:text-lg break-words ${
+                                            todo.done ? 'line-through text-gray-400' : 'text-gray-800'
+                                        }`}>
+                                            {todo.task}
+                                        </p>
+                                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                                            Updated: {new Date(todo.updated).toLocaleString()}
+                                        </p>
+                                    </div>
+                                    <button 
+                                        onClick={() => handleDeleteTodo(todo.id)}
+                                        className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 whitespace-nowrap"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
