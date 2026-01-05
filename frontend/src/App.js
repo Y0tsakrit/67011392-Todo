@@ -26,7 +26,10 @@ function App() {
 
     return (
         <div className="flex flex-col gap-6">
-            <h1 className='flex justify-center mt-4 text-3xl'>Full Stack Todo App</h1>
+            <h1 className='flex items-center justify-center mt-4 text-3xl gap-3'>
+                Full Stack Todo App
+                <img src='/logo.png' alt='Logo' className='w-10 h-10' />
+            </h1>
             {/* Conditional rendering based on login status */}
             {currentUser ? (
                 <TodoList username={currentUser} onLogout={handleLogout} />
